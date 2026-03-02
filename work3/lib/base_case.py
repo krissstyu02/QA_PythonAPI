@@ -3,11 +3,11 @@ import json
 from requests import Response
 class BaseCase:
     def get_cookie ( self, response: Response, cookie_name):
-        assert not cookie_name in response.cookies, f"Cannot find cookie with name {cookie_name} in the last response"
+        assert cookie_name in response.cookies, f"Cannot find cookie with name {cookie_name} in the last response"
         return  response.cookies[cookie_name]
 
     def get_header ( self, response: Response, headers_name):
-        assert not headers_name in response.headers, f"Cannot find header with name {headers_name} in the last response"
+        assert headers_name in response.headers, f"Cannot find header with name {headers_name} in the last response"
         return  response.headers[headers_name]
 
     def get_json_value(self, response: Response, name):
