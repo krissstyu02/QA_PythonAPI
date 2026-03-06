@@ -1,6 +1,8 @@
 import datetime
 import os
+
 from requests import Response
+
 
 class Logger:
     base_dir = os.path.dirname(os.path.dirname(__file__))
@@ -14,12 +16,12 @@ class Logger:
     )
 
     @classmethod
-    def _write_log_to_file(cls, data:str):
+    def _write_log_to_file(cls, data: str):
         with open(cls.file_name, 'a', encoding='utf-8') as logger_file:
             logger_file.write(data)
 
     @classmethod
-    def add_request(cls, url:str, data:dict, headers:dict, cookies:dict, method:str):
+    def add_request(cls, url: str, data: dict, headers: dict, cookies: dict, method: str):
         testName = os.environ.get('PYTEST_CURRENT_TEST')
 
         data_to_add = f"\n-----\n"
@@ -45,5 +47,3 @@ class Logger:
         data_to_add = f"\n-----\n"
 
         cls._write_log_to_file(data_to_add)
-
-

@@ -1,6 +1,7 @@
 import requests
 from work4.lib.logger import Logger
 
+
 class MyRequests:
     @staticmethod
     def post(url: str, data: dict = None, headers: dict = None, cookies: dict = None):
@@ -19,7 +20,7 @@ class MyRequests:
         return MyRequests._send(url, data, headers, cookies, 'DELETE')
 
     @staticmethod
-    def _send(url:str, data:dict, headers:dict, cookies:dict, method:str):
+    def _send(url: str, data: dict, headers: dict, cookies: dict, method: str):
         url = f"https://playground.learnqa.ru/api{url}"
 
         if headers is None:
@@ -29,10 +30,10 @@ class MyRequests:
 
         Logger.add_request(url, data, headers, cookies, method)
 
-        if method  == 'GET':
-            response = requests.get(url, params= data, headers=headers, cookies=cookies)
-        elif method  == 'POST':
-            response = requests.post(url, data= data, headers=headers, cookies=cookies)
+        if method == 'GET':
+            response = requests.get(url, params=data, headers=headers, cookies=cookies)
+        elif method == 'POST':
+            response = requests.post(url, data=data, headers=headers, cookies=cookies)
         elif method == 'PUT':
             response = requests.put(url, params=data, headers=headers, cookies=cookies)
         elif method == 'DELETE':
@@ -43,6 +44,3 @@ class MyRequests:
         Logger.add_response(response)
 
         return response
-
-
-

@@ -2,10 +2,11 @@ from work4.lib.my_requests import MyRequests
 from work4.lib.base_case import BaseCase
 from work4.lib.assertions import Assertions
 
+
 class TestUserEdit(BaseCase):
 
     def test_edit_just_created_user(self):
-        #REGISTER
+        # REGISTER
         register_data = self.prepare_registartion_data()
         response1 = MyRequests.post("/user/", data=register_data)
 
@@ -16,7 +17,7 @@ class TestUserEdit(BaseCase):
         password = register_data["password"]
         user_id = self.get_json_value(response1, "id")
 
-        #AUTHORIZATION
+        # AUTHORIZATION
         login_data = {
             'email': email,
             'password': password,
@@ -25,19 +26,19 @@ class TestUserEdit(BaseCase):
         auth_sid = self.get_cookie(response2, "auth_sid")
         token = self.get_header(response2, "x-csrf-token")
 
-        #EDIT
+        # EDIT
         new_name = 'Changed Name'
 
         response3 = MyRequests.put(f"/user/{user_id}",
-                                 headers={"x-csrf-token": token},
-                                 cookies={"auth_sid": auth_sid},
-                                 data = {"firstName":new_name}
-                                 )
+                                   headers={"x-csrf-token": token},
+                                   cookies={"auth_sid": auth_sid},
+                                   data={"firstName": new_name}
+                                   )
 
         Assertions.assert_code_status(response3, 200)
 
-        #GET
+        # GET
         response4 = MyRequests.get(f"/user/{user_id}",
-                                 headers={"x-csrf-token": token},
-                                 cookies={"auth_sid": auth_sid})
+                                   headers={"x-csrf-token": token},
+                                   cookies={"auth_sid": auth_sid})
         Assertions.assert_json_value_by_name(response4, "firstName", new_name, "Wrong name of user after edit")

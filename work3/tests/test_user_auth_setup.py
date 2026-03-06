@@ -3,10 +3,9 @@ import requests
 
 
 class TestUserAuth:
-
-    exclude_params=[
-            ("no_cookie"),
-            ("no_token")
+    exclude_params = [
+        ("no_cookie"),
+        ("no_token")
     ]
 
     def setup_method(self, method):
@@ -35,18 +34,16 @@ class TestUserAuth:
 
         assert self.user_id_from_auth_method == user_id_from_check_method, "User id from auth method is not equal for user_id in check_method"
 
-
     @pytest.mark.parametrize('condition', exclude_params)
     def test_negative_auth_check(self, condition):
-            url2 = "https://playground.learnqa.ru/api/user/auth"
+        url2 = "https://playground.learnqa.ru/api/user/auth"
 
-            if condition == 'no_cookie':
-                response2 = requests.get(url2, headers={"x-csrf-token": self.token})
-            else :
-                response2 = requests.get(url2, cookies={"auth_sid": self.auth_sid})
+        if condition == 'no_cookie':
+            response2 = requests.get(url2, headers={"x-csrf-token": self.token})
+        else:
+            response2 = requests.get(url2, cookies={"auth_sid": self.auth_sid})
 
+        assert "user_id" in response2.json(), "There is no user id in the second response"
+        user_id_from_check_method = response2.json()["user_id"]
 
-            assert "user_id" in response2.json(), "There is no user id in the second response"
-            user_id_from_check_method = response2.json()["user_id"]
-
-            assert 0 == user_id_from_check_method, f"User is authorized with condition {condition}"
+        assert 0 == user_id_from_check_method, f"User is authorized with condition {condition}"

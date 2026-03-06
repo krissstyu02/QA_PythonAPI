@@ -2,6 +2,7 @@ from work4.lib.my_requests import MyRequests
 from work4.lib.base_case import BaseCase
 from work4.lib.assertions import Assertions
 
+
 class TestUserGet(BaseCase):
 
     def test_get_user_details_not_auth(self):
@@ -25,7 +26,7 @@ class TestUserGet(BaseCase):
         user_id_from_auth_method = self.get_json_value(response1, "user_id")
 
         response2 = MyRequests.get(f"/user/{user_id_from_auth_method}",
-                                 headers={"x-csrf-token": token},
-                                 cookies={"auth_sid": auth_sid})
+                                   headers={"x-csrf-token": token},
+                                   cookies={"auth_sid": auth_sid})
         expected_fields = ["username", "email", "firstName", "lastName"]
         Assertions.assert_json_has_keys(response2, expected_fields)

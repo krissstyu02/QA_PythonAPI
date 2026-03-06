@@ -1,19 +1,19 @@
 import requests
-import  json
+import json
 import time
 
-#1
+# 1
 response = requests.get("https://playground.learnqa.ru/ajax/api/longtime_job")
 print(response.text)
 obj = json.loads(response.text)
 token = obj["token"]
 seconds = int(obj["seconds"])
-#2
+# 2
 payload = {"token": token}
 response2 = requests.get("https://playground.learnqa.ru/ajax/api/longtime_job", params=payload)
 print(response2.text)
 
-#3
+# 3
 time.sleep(seconds)
 payload = {"token": token}
 response3 = requests.get("https://playground.learnqa.ru/ajax/api/longtime_job", params=payload)

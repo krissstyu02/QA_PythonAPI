@@ -42,7 +42,7 @@ from work1.requests_lab import response
 # print(response.status_code)
 # print(response.text)
 
-#301
+# 301
 # response= requests.post('https://playground.learnqa.ru/api/get_301', allow_redirects=True)
 #
 # first_response = response.history[0]
@@ -52,15 +52,9 @@ from work1.requests_lab import response
 # print(second_response.url)
 # print(response.status_code)
 
-#headers
+# headers
 
-headers = {"some_header":"123"}
-response= requests.get("https://playground.learnqa.ru/api/show_all_headers", headers=headers)
+headers = {"some_header": "123"}
+response = requests.get("https://playground.learnqa.ru/api/show_all_headers", headers=headers)
 print(response.text)
 print(response.headers)
-
-
-
-
-
-

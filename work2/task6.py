@@ -7,4 +7,3 @@ num_redirects = len(response.history)
 print(response.history)
 print(num_redirects)
 print(response.url)
-

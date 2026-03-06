@@ -5,10 +5,9 @@ from work4.lib.my_requests import MyRequests
 
 
 class TestUserAuth(BaseCase):
-
-    exclude_params=[
-            ("no_cookie"),
-            ("no_token")
+    exclude_params = [
+        ("no_cookie"),
+        ("no_token")
     ]
 
     def setup_method(self, method):
@@ -25,18 +24,19 @@ class TestUserAuth(BaseCase):
     def test_auth_user(self):
 
         response2 = MyRequests.get("/user/auth", headers={"x-csrf-token": self.token},
-                                 cookies={"auth_sid": self.auth_sid})
+                                   cookies={"auth_sid": self.auth_sid})
 
-        Assertions.assert_json_value_by_name(response2, "user_id", self.user_id_from_auth_method, "User id from auth method is not equal to user_id from check method")
+        Assertions.assert_json_value_by_name(response2, "user_id", self.user_id_from_auth_method,
+                                             "User id from auth method is not equal to user_id from check method")
 
     @pytest.mark.parametrize('condition', exclude_params)
     def test_negative_auth_check(self, condition):
-            url2 = "/user/auth"
+        url2 = "/user/auth"
 
-            if condition == 'no_cookie':
-                response2 = MyRequests.get(url2, headers={"x-csrf-token": self.token})
-            else :
-                response2 = MyRequests.get(url2, cookies={"auth_sid": self.auth_sid})
+        if condition == 'no_cookie':
+            response2 = MyRequests.get(url2, headers={"x-csrf-token": self.token})
+        else:
+            response2 = MyRequests.get(url2, cookies={"auth_sid": self.auth_sid})
 
-            Assertions.assert_json_value_by_name(response2, "user_id", 0,
-                                                 "User id from auth method is not equal to user_id from check method")
+        Assertions.assert_json_value_by_name(response2, "user_id", 0,
+                                             "User id from auth method is not equal to user_id from check method")
