@@ -1,7 +1,7 @@
 import requests
-from work4.lib.logger import Logger
+from lib.logger import Logger
 import allure
-from work4.environment import ENV_OBJECT
+from environment import ENV_OBJECT
 
 class MyRequests:
     @staticmethod
