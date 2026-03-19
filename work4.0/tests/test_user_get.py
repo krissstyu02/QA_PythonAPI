@@ -1,7 +1,6 @@
 from work4.lib.my_requests import MyRequests
 from work4.lib.base_case import BaseCase
 from work4.lib.assertions import Assertions
-import random
 
 class TestUserGet(BaseCase):
 
