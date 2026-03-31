@@ -5,6 +5,13 @@ from work4.lib.assertions import Assertions
 
 class TestUserEdit(BaseCase):
 
+    def setup_method(self, method):
+        # REGISTER
+        register_data = self.prepare_registartion_data()
+        response1 = MyRequests.post("/user/", data=register_data)
+
+        self.another_user_id = self.get_json_value(response1, "id")
+
     def test_edit_just_created_user(self):
         # REGISTER
         register_data = self.prepare_registartion_data()
@@ -75,12 +82,10 @@ class TestUserEdit(BaseCase):
         auth_sid = self.get_cookie(response2, "auth_sid")
         token = self.get_header(response2, "x-csrf-token")
 
-        another_user_id = 16 if user_id != 16 else 17
-
         # EDIT
         new_name = 'Changed Name'
 
-        response3 = MyRequests.put(f"/user/{another_user_id}",
+        response3 = MyRequests.put(f"/user/{self.another_user_id}",
                                    headers={"x-csrf-token": token},
                                    cookies={"auth_sid": auth_sid},
                                    data={"firstName": new_name}
