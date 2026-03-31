@@ -102,5 +102,4 @@ class TestUserDelete(BaseCase):
                                       )
 
         Assertions.assert_code_status(response3, 400)
-        # print(response3.text)
         Assertions.assert_json_value_by_name(response3, "error", "Please, do not delete test users with ID 1, 2, 3, 4 or 5.", "Wrong error")
