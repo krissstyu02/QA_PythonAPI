@@ -1,8 +1,9 @@
 from work4.lib.my_requests import MyRequests
 from work4.lib.base_case import BaseCase
 from work4.lib.assertions import Assertions
+import allure
 
-
+@allure.epic("Edit cases")
 class TestUserEdit(BaseCase):
 
     def setup_method(self, method):
@@ -12,6 +13,7 @@ class TestUserEdit(BaseCase):
 
         self.another_user_id = self.get_json_value(response1, "id")
 
+    @allure.story('Создание и редактирование пользователя')
     def test_edit_just_created_user(self):
         # REGISTER
         register_data = self.prepare_registartion_data()
@@ -50,6 +52,7 @@ class TestUserEdit(BaseCase):
                                    cookies={"auth_sid": auth_sid})
         Assertions.assert_json_value_by_name(response4, "firstName", new_name, "Wrong name of user after edit")
 
+    @allure.story('Редактирование неавторизованного пользователя')
     def test_edit_not_auth_user(self):
         new_name = 'Changed Name'
 
@@ -60,7 +63,7 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response3, 400)
         Assertions.assert_json_value_by_name(response3, "error", "Auth token not supplied", "Wrong error")
 
-
+    @allure.story('Редактирование другого пользователя')
     def test_edit_another_user(self):
         # REGISTER
         register_data = self.prepare_registartion_data()
@@ -94,7 +97,7 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response3, 400)
         Assertions.assert_json_has_key(response3, "error")
 
-
+    @allure.story('Редактирование пользователя - невалидный email')
     def test_edit_with_not_valid_email(self):
         # REGISTER
         register_data = self.prepare_registartion_data()
@@ -134,7 +137,7 @@ class TestUserEdit(BaseCase):
                                    cookies={"auth_sid": auth_sid})
         Assertions.assert_json_value_by_name(response4, "email", email, "New email of user after negative edit")
 
-
+    @allure.story('Редактирование пользователя - невалидный name')
     def test_edit_with_not_valid_name(self):
         # REGISTER
         register_data = self.prepare_registartion_data()

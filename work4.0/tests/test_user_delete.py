@@ -1,8 +1,9 @@
 from work4.lib.my_requests import MyRequests
 from work4.lib.base_case import BaseCase
 from work4.lib.assertions import Assertions
+import allure
 
-
+@allure.epic("Delete cases")
 class TestUserDelete(BaseCase):
 
     def setup_method(self, method):
@@ -12,6 +13,8 @@ class TestUserDelete(BaseCase):
 
         self.another_user_id = self.get_json_value(response1, "id")
 
+    @allure.feature('Positive')
+    @allure.title('Create and delete user')
     def test_delete_just_created_user(self):
         # REGISTER
         register_data = self.prepare_registartion_data()
@@ -49,6 +52,8 @@ class TestUserDelete(BaseCase):
 
         Assertions.assert_code_status(response4, 404)
 
+    @allure.feature('Negative')
+    @allure.title('Delete another user')
     def test_delete_another_user(self):
         # REGISTER
         register_data = self.prepare_registartion_data()
@@ -59,7 +64,6 @@ class TestUserDelete(BaseCase):
 
         email = register_data["email"]
         password = register_data["password"]
-        user_id = self.get_json_value(response1, "id")
 
         # AUTHORIZATION
         login_data = {
@@ -80,7 +84,8 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response3, 400)
         Assertions.assert_json_has_key(response3, "error")
 
-
+    @allure.feature('Negative')
+    @allure.title('Delete user with id=2')
     def test_delete_user_with_id_2(self):
         # AUTHORIZATION
         login_data = {

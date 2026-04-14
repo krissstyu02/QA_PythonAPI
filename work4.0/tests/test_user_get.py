@@ -1,7 +1,9 @@
 from work4.lib.my_requests import MyRequests
 from work4.lib.base_case import BaseCase
 from work4.lib.assertions import Assertions
+import allure
 
+@allure.epic("Get cases")
 class TestUserGet(BaseCase):
 
     def test_get_user_details_not_auth(self):
@@ -18,17 +20,20 @@ class TestUserGet(BaseCase):
             "password": '1234'
         }
 
-        response1 = MyRequests.post("/user/login", data=data)
+        with allure.step("Авторизация пользователя"):
+            response1 = MyRequests.post("/user/login", data=data)
 
         auth_sid = self.get_cookie(response1, "auth_sid")
         token = self.get_header(response1, "x-csrf-token")
         user_id_from_auth_method = self.get_json_value(response1, "user_id")
 
-        response2 = MyRequests.get(f"/user/{user_id_from_auth_method}",
+        with allure.step("Получение информации авторизованного пользователя"):
+            response2 = MyRequests.get(f"/user/{user_id_from_auth_method}",
                                    headers={"x-csrf-token": token},
                                    cookies={"auth_sid": auth_sid})
         expected_fields = ["username", "email", "firstName", "lastName"]
-        Assertions.assert_json_has_keys(response2, expected_fields)
+        with allure.step("Проверка полученных полей"):
+            Assertions.assert_json_has_keys(response2, expected_fields)
 
     def test_get_user_details_auth_as_another_user(self):
         data = {
